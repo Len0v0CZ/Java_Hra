@@ -18,6 +18,11 @@ class Main {
         Hrac damir = new Hrac("damir");
         System.out.println(damir.otevritInv());
 
+        Hrac greg = new Hrac("greg");
+        System.out.println(greg.otevritInv());
+
+
+
 
     }
 
