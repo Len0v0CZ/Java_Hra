@@ -1,10 +1,12 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Hrac {
     private String name;
     private int zivoty;
     private int zlataky;
     private Array<Predmet> inventar;
+    Scanner sc = new Scanner(System.in);
 
     public Hrac(String name) {
         this.name = name;
@@ -21,11 +23,15 @@ public class Hrac {
         return this.inventar.pridejPolozku(new Predmet(druh, nazev));
     }
 
-    public Array otevritInv() {
+    private Array otevritInv() {
         return this.inventar;
     }
 
     public void vyzvatNaSouboj(Hrac souper) {
+        this.otevritInv();
+        System.out.println("Chces neco pouzit?");
+        int odpoved = sc.nextInt();
+
         int ja = this.hodKockou();
         int on = this.hodKockou();
 
