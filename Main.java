@@ -15,11 +15,16 @@ class Main {
 
         System.out.println(predmety);
         
-        Hrac damir = new Hrac("damir");
+        Hrac damir = Hrac.vytvorHrace();
         System.out.println(damir.otevritInv());
 
-        Hrac greg = new Hrac("greg");
+        Hrac greg = Hrac.vytvorHrace();
         System.out.println(greg.otevritInv());
+
+        damir.nakup();
+        greg.nakup();
+
+        damir.vyzvatDynamicky(greg);
 
 
 
