@@ -7,13 +7,13 @@ public class Hrac {
     private int zlataky;
     private Array<Predmet> inventar;
     private Scanner scanner;
-
+    private int kolo;
     public Hrac(Scanner scanner) {
         this.scanner = scanner;
         System.out.print("Zadej jméno hráče: ");
         this.name = scanner.nextLine();
         this.zivoty = 25;
-        this.zlataky = 21;
+        this.zlataky = 29;
         this.inventar = new Array<>(7);
     }
 
@@ -45,22 +45,41 @@ public class Hrac {
     }
 
     public void vyzvatNaSouboj(Hrac souper) {
-
+        kolo = 0;
         while (this.zivoty > 0 && souper.zivoty > 0) {
             System.out.println("\n--- Nové kolo ---");
             System.out.println("Stav: " + this.name + " (" + this.zivoty + " HP) vs " + souper.name + " (" + souper.zivoty + " HP)");
             System.out.println(this.name + " inventář: " + this.inventar);
             System.out.println(souper.name + " inventář: " + souper.inventar);
 
-            System.out.print(this.name + ", zadej index předmětu, který chceš použít (nebo -1 pro žádný): ");
-            int indexMojehoPredmetu = scanner.nextInt();
-            Predmet myPredmet = this.inventar.vratPolozku(indexMojehoPredmetu);
-            DruhPredmetu mujEfekt = (myPredmet != null) ? myPredmet.getDruhPredmetu() : null;
+            int indexMojehoPredmetu;
+            int indexSouperovaPredmetu;
+            Predmet myPredmet;
+            Predmet souperPredmet;
+            DruhPredmetu mujEfekt;
+            DruhPredmetu souperEfekt;
 
-            System.out.print(souper.name + ", zadej index předmětu, který chceš použít (nebo -1 pro žádný): ");
-            int indexSouperovaPredmetu = scanner.nextInt();
-            Predmet souperPredmet = souper.inventar.vratPolozku(indexSouperovaPredmetu);
-            DruhPredmetu souperEfekt = (souperPredmet != null) ? souperPredmet.getDruhPredmetu() : null;
+            if (kolo % 2 == 0) {
+                System.out.print(this.name + ", zadej index předmětu, který chceš použít (nebo -1 pro žádný): ");
+                indexMojehoPredmetu = scanner.nextInt();
+                myPredmet = this.inventar.vratPolozku(indexMojehoPredmetu);
+                mujEfekt = (myPredmet != null) ? myPredmet.getDruhPredmetu() : null;
+
+                System.out.print(souper.name + ", zadej index předmětu, který chceš použít (nebo -1 pro žádný): ");
+                indexSouperovaPredmetu = scanner.nextInt();
+                souperPredmet = souper.inventar.vratPolozku(indexSouperovaPredmetu);
+                souperEfekt = (souperPredmet != null) ? souperPredmet.getDruhPredmetu() : null;
+            } else {
+                System.out.print(souper.name + ", zadej index předmětu, který chceš použít (nebo -1 pro žádný): ");
+                indexSouperovaPredmetu = scanner.nextInt();
+                souperPredmet = souper.inventar.vratPolozku(indexSouperovaPredmetu);
+                souperEfekt = (souperPredmet != null) ? souperPredmet.getDruhPredmetu() : null;
+
+                System.out.print(this.name + ", zadej index předmětu, který chceš použít (nebo -1 pro žádný): ");
+                indexMojehoPredmetu = scanner.nextInt();
+                myPredmet = this.inventar.vratPolozku(indexMojehoPredmetu);
+                mujEfekt = (myPredmet != null) ? myPredmet.getDruhPredmetu() : null;
+            }
 
             int ja = this.hodKockou();
             int on = souper.hodKockou();
@@ -74,46 +93,60 @@ public class Hrac {
             }
 
             if (mujEfekt == DruhPredmetu.POTION) {
-                int mujKostka = this.hodKockou();
-                if (mujKostka <= 2) {
+                int mojeKocka = this.hodKockou();
+                if (mojeKocka <= 2) {
                     this.zivoty += 1;
-                } else if (mujKostka <= 4) {
+                    System.out.println(this.name + " použil lektvar a získal 1 život.");
+                } else if (mojeKocka <= 4) {
                     this.zivoty += 3;
+                    System.out.println(this.name + " použil lektvar a získal 3 životy.");
                 } else {
                     this.zivoty += 5;
+                    System.out.println(this.name + " použil lektvar a získal 5 životů.");
                 }
             }
 
             if (souperEfekt == DruhPredmetu.POTION) {
-                int souperKostka = souper.hodKockou();
-                if (souperKostka <= 2) {
+                int souperKocka = souper.hodKockou();
+                if (souperKocka <= 2) {
                     souper.zivoty += 1;
-                } else if (2 < souperKostka && souperKostka <= 4) {
+                    System.out.println(souper.name + " použil lektvar a získal 1 život.");
+                } else if (2 < souperKocka && souperKocka <= 4) {
                     souper.zivoty += 3;
+                    System.out.println(souper.name + " použil lektvar a získal 3 životy.");
                 } else {
                     souper.zivoty += 5;
+                    System.out.println(souper.name + " použil lektvar a získal 5 životů.");
                 }
             }
 
-            int damageNaSoupera = (mujEfekt == DruhPredmetu.MEC) ? ja * 2 : ja;
+            int damageNaSoupera = (mujEfekt == DruhPredmetu.MEC) ? ja * 2 - 1 : ja;
             if (souperEfekt == DruhPredmetu.ARMOR) {
-                damageNaSoupera /= 2;
+                damageNaSoupera /= 2 - 1;
             }
 
-            int damageNaMne = (souperEfekt == DruhPredmetu.MEC) ? on * 2 : on;
+            int damageNaMne = (souperEfekt == DruhPredmetu.MEC) ? on * 2 - 1 : on;
             if (mujEfekt == DruhPredmetu.ARMOR) {
-                damageNaMne /= 2;
+                damageNaMne /= 2 - 1;
             }
 
             if (mujEfekt == DruhPredmetu.SHIELD) {
                 if (this.hodKockou() >= 3) {
                     damageNaMne = 0;
+                    System.out.println(this.name + " použil štít a zablokoval útok!");
+                } 
+                else {
+                    System.out.println(this.name + " použil štít, ale neblokoval útok.");
                 }
             }
 
             if (souperEfekt == DruhPredmetu.SHIELD) {
                 if (souper.hodKockou() >= 3) {
                     damageNaSoupera = 0;
+                    System.out.println(souper.name + " použil štít a zablokoval útok!");
+                } 
+                else {
+                    System.out.println(souper.name + " použil štít, ale neblokoval útok.");
                 }
             }
 
@@ -123,16 +156,17 @@ public class Hrac {
             this.zivoty -= damageNaMne;
             inventar.odeberPolozku(indexMojehoPredmetu);
             souper.inventar.odeberPolozku(indexSouperovaPredmetu);
+            kolo++;
         }
         System.out.println("\n=== KONEC SOUBOJE ===");
         if (this.zivoty <= 0 && souper.zivoty <= 0) {
             System.out.println("Oba hráči zemřeli");
         } else if (this.zivoty > 0) {
             System.out.println("Vítězem je " + this.name);
-            this.zlataky += 18;
+            this.zlataky += 24;
         } else {
             System.out.println("Vítězem je " + souper.name);
-            souper.zlataky += 18;
+            souper.zlataky += 24;
         }
         this.zivoty = 25;
         souper.zivoty = 25;
