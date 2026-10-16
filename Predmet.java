@@ -13,6 +13,6 @@ public class Predmet {
 
     @Override
     public String toString() {
-        return "Predmet [druhPredmetu=" + druhPredmetu + ", jmeno=" + jmeno + "]";
+        return "Druh:" + druhPredmetu + ", Název: " + jmeno;
     }
 }

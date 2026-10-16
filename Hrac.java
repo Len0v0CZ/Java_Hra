@@ -13,8 +13,8 @@ public class Hrac {
         System.out.print("Zadej jméno hráče: ");
         this.name = scanner.nextLine();
         this.zivoty = 25;
-        this.zlataky = 20;
-        this.inventar = new Array<>(5);
+        this.zlataky = 21;
+        this.inventar = new Array<>(7);
     }
 
     public Array<Predmet> otevritInv() {
@@ -66,7 +66,7 @@ public class Hrac {
             int on = souper.hodKockou();
 
             if (mujEfekt == DruhPredmetu.BOW) {
-                ja += (this.hodKockou()/2);
+                ja += (this.hodKockou() - 1);
             }
 
             if (souperEfekt == DruhPredmetu.BOW) {
@@ -74,11 +74,25 @@ public class Hrac {
             }
 
             if (mujEfekt == DruhPredmetu.POTION) {
-                this.zivoty += 5;
+                int mujKostka = this.hodKockou();
+                if (mujKostka <= 2) {
+                    this.zivoty += 1;
+                } else if (mujKostka <= 4) {
+                    this.zivoty += 3;
+                } else {
+                    this.zivoty += 5;
+                }
             }
 
             if (souperEfekt == DruhPredmetu.POTION) {
-                souper.zivoty += 5;
+                int souperKostka = souper.hodKockou();
+                if (souperKostka <= 2) {
+                    souper.zivoty += 1;
+                } else if (2 < souperKostka && souperKostka <= 4) {
+                    souper.zivoty += 3;
+                } else {
+                    souper.zivoty += 5;
+                }
             }
 
             int damageNaSoupera = (mujEfekt == DruhPredmetu.MEC) ? ja * 2 : ja;
@@ -91,15 +105,14 @@ public class Hrac {
                 damageNaMne /= 2;
             }
 
-            
             if (mujEfekt == DruhPredmetu.SHIELD) {
-                if(hodKockou() > 3) {
+                if (this.hodKockou() >= 3) {
                     damageNaMne = 0;
                 }
             }
 
             if (souperEfekt == DruhPredmetu.SHIELD) {
-                if(hodKockou() > 3) {
+                if (souper.hodKockou() >= 3) {
                     damageNaSoupera = 0;
                 }
             }
@@ -116,10 +129,10 @@ public class Hrac {
             System.out.println("Oba hráči zemřeli");
         } else if (this.zivoty > 0) {
             System.out.println("Vítězem je " + this.name);
-            this.zlataky += 22;
+            this.zlataky += 18;
         } else {
             System.out.println("Vítězem je " + souper.name);
-            souper.zlataky += 22;
+            souper.zlataky += 18;
         }
         this.zivoty = 25;
         souper.zivoty = 25;
