@@ -1,4 +1,4 @@
-public  class Predmet{
+public class Predmet {
     private DruhPredmetu druhPredmetu;
     private String jmeno;
 
@@ -7,10 +7,12 @@ public  class Predmet{
         this.jmeno = jmeno;
     }
 
+    public DruhPredmetu getDruhPredmetu() {
+        return this.druhPredmetu;
+    }
+
     @Override
     public String toString() {
         return "Predmet [druhPredmetu=" + druhPredmetu + ", jmeno=" + jmeno + "]";
     }
-
-
 }

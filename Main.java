@@ -1,36 +1,22 @@
 class Main {
     public static void main(String[] args) {
-        Array<Predmet> predmety = new Array<>(5);
+        Hrac hrac1 = new Hrac("Damir");
+        Hrac hrac2 = new Hrac("Karel");
 
+        // Nakup v obchode (kazda vec za 3 goldy)
+        hrac1.koupitPredmet(DruhPredmetu.MEC, "Ocelovy mec");     // index 0
+        hrac1.koupitPredmet(DruhPredmetu.ARMOR, "Zelezna zbroj"); // index 1
+        hrac1.koupitPredmet(DruhPredmetu.BOW, "Dlouhy luk");      // index 2
 
-        predmety.pridejPolozku(new Predmet(DruhPredmetu.ARMOR, "helma_tulaka"));
-        predmety.pridejPolozku(new Predmet(DruhPredmetu.ARMOR, "breastplate"));
-        predmety.pridejPolozku(new Predmet(DruhPredmetu.ARMOR, "gatky"));
-        predmety.pridejPolozku(new Predmet(DruhPredmetu.ARMOR, "botydorobory"));
+        System.out.println(hrac1);
 
-        System.out.println(predmety.odeberPolozku(2));
-    
+        // Hrac 1 vyzve Hrace 2 a zvoli si predmet na indexu 0 (MEC)
+        hrac1.vyzvatNaSouboj(hrac2, 0);
 
-        predmety.pridejPolozku(new Predmet(DruhPredmetu.ARMOR, "gatky"));
+        // Dalsi souboj, Hrac 1 zvoli predmet na indexu 1 (ARMOR)
+        hrac1.vyzvatNaSouboj(hrac2, 1);
 
-        System.out.println(predmety);
-        
-        Hrac damir = new Hrac("damir");
-        System.out.println(damir.otevritInv());
-
-
+        System.out.println(hrac1);
+        System.out.println(hrac2);
     }
-
-
-
-    @Override
-    public String toString() {
-        return "Main []";
-    }
-
-
-    //hrac ma zlataky, itemy, zivoty
-    //item stoji zlataky, max  itemu
-    //itemy potion, mec, shield
-    //hod kockou
 }

@@ -1,5 +1,3 @@
-import java.util.Random;
-
 public class Hrac {
     private String name;
     private int zivoty;
@@ -13,36 +11,56 @@ public class Hrac {
         this.inventar = new Array<>(5);
     }
 
-    public boolean pridejInventar(DruhPredmetu druh, String nazev) {
-        if (this.zlataky < 2) {
+    // Obchod: kazda vec stoji 3 goldy
+    public boolean koupitPredmet(DruhPredmetu druh, String nazev) {
+        if (this.zlataky < 3) {
             return false;
         }
-        this.zlataky -= 2;
-        return this.inventar.pridejPolozku(new Predmet(druh, nazev));
+        if (this.inventar.pridejPolozku(new Predmet(druh, nazev))) {
+            this.zlataky -= 3;
+            return true;
+        }
+        return false;
     }
 
-    public Array otevritInv() {
+    public Array<Predmet> otevritInv() {
         return this.inventar;
     }
 
-    public void vyzvatNaSouboj(Hrac souper) {
+    // indexPredmetu: index v inventari (napr. 0 až 4), nebo -1 pokud bojuje bez predmetu
+    public void vyzvatNaSouboj(Hrac souper, int indexPredmetu) {
+        Predmet zvolenyPredmet = this.inventar.vratPolozku(indexPredmetu);
+        DruhPredmetu efekt = (zvolenyPredmet != null) ? zvolenyPredmet.getDruhPredmetu() : null;
+
         int ja = this.hodKockou();
-        int on = this.hodKockou();
+        int on = souper.hodKockou();
 
-        
+        // Luk dava druhy hod kostkou (pricte se k prvnimu, pripadne lze pouzit Math.max)
+        if (efekt == DruhPredmetu.BOW) {
+            ja += this.hodKockou();
+        }
+
+        int zakladniDamage = 4; // Zakladni ztrata zivotu
+
+        if (ja > on) {
+            int damage = (efekt == DruhPredmetu.MEC) ? zakladniDamage * 2 : zakladniDamage;
+            souper.zivoty -= damage;
+            System.out.println(this.name + " vyhral (" + ja + " vs " + on + "). " + souper.name + " ztraci " + damage + " HP.");
+        } else if (on > ja) {
+            int damage = (efekt == DruhPredmetu.ARMOR) ? zakladniDamage / 2 : zakladniDamage;
+            this.zivoty -= damage;
+            System.out.println(this.name + " prohral (" + ja + " vs " + on + "). Ztraci " + damage + " HP.");
+        } else {
+            System.out.println("Remiza (" + ja + " vs " + on + "). Nikdo neztraci HP.");
+        }
     }
 
-    private int hodKockou() { 
-        return (int)Math.random()*6 + 1;
+    private int hodKockou() {
+        return (int)(Math.random() * 6) + 1;
     }
-
-
 
     @Override
     public String toString() {
-        return "Hrac [name=" + name + ", zivoty=" + zivoty + ", zlataky=" + zlataky + ", inventar=" + inventar + "]";
+        return "Hrac [name=" + name + ", zivoty=" + zivoty + ", zlataky=" + zlataky + ", inventar=\n" + inventar + "]";
     }
-
-    
-    
 }
