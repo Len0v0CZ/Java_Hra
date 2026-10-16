@@ -12,8 +12,8 @@ public class Hrac {
         this.scanner = scanner;
         System.out.print("Zadej jméno hráče: ");
         this.name = scanner.nextLine();
-        this.zivoty = 20;
-        this.zlataky = 10;
+        this.zivoty = 25;
+        this.zlataky = 20;
         this.inventar = new Array<>(5);
     }
 
@@ -116,16 +116,23 @@ public class Hrac {
             System.out.println("Oba hráči zemřeli");
         } else if (this.zivoty > 0) {
             System.out.println("Vítězem je " + this.name);
-            this.zlataky += 11;
+            this.zlataky += 22;
         } else {
             System.out.println("Vítězem je " + souper.name);
-            souper.zlataky += 11;
+            souper.zlataky += 22;
         }
-        this.zivoty = 20;
-        souper.zivoty = 20;
+        this.zivoty = 25;
+        souper.zivoty = 25;
+        if (this.zlataky <= 5) {
+            this.zlataky = 6;
+        }
+
+        if (souper.zlataky <= 5) {
+            souper.zlataky = 6;
+        }
     }
 
-    private int hodKockou() {
+    private int hodKockou() { // hod kočkou
         return (int)(Math.random() * 6) + 1;
     }
 
