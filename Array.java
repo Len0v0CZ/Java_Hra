@@ -15,6 +15,10 @@ class Array<E> {
         return true;
     }
 
+    public int pocetPolozek() {
+        return this.numItems;
+    }
+
     public E vratPolozku(int index) {
         if (index < 0 || this.numItems <= index) {
             return null;

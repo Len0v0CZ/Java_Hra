@@ -6,28 +6,42 @@ public class Hrac {
     private int zivoty;
     private int zlataky;
     private Array<Predmet> inventar;
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
 
-    public Hrac() {
+    public Hrac(Scanner scanner) {
+        this.scanner = scanner;
         System.out.print("Zadej jméno hráče: ");
         this.name = scanner.nextLine();
         this.zivoty = 20;
         this.zlataky = 10;
         this.inventar = new Array<>(5);
     }
-    public boolean koupitPredmet(DruhPredmetu druh, String nazev) {
-        if (this.zlataky < 3) {
-            return false;
-        }
-        if (this.inventar.pridejPolozku(new Predmet(druh, nazev))) {
-            this.zlataky -= 3;
-            return true;
-        }
-        return false;
-    }
 
     public Array<Predmet> otevritInv() {
         return this.inventar;
+    }
+
+    public int getZlataky() {
+        return this.zlataky;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public boolean koupitPredmet(DruhPredmetu druh, String nazev, int cena) {
+        if (this.zlataky < cena) {
+            return false;
+        }
+        if (!this.inventar.pridejPolozku(new Predmet(druh, nazev))) {
+            return false;
+        }
+        this.zlataky -= cena;
+        return true;
+    }
+
+    public void navstivitObchod(Obchod obchod) {
+        obchod.nakup(this, this.scanner);
     }
 
     public void vyzvatNaSouboj(Hrac souper) {
@@ -79,11 +93,15 @@ public class Hrac {
 
             
             if (mujEfekt == DruhPredmetu.SHIELD) {
-                damageNaMne = 0;
+                if(hodKockou() > 3) {
+                    damageNaMne = 0;
+                }
             }
 
             if (souperEfekt == DruhPredmetu.SHIELD) {
-                damageNaSoupera = 0;
+                if(hodKockou() > 3) {
+                    damageNaSoupera = 0;
+                }
             }
 
             System.out.println(this.name + " hodil: " + ja + " a způsobuje " + damageNaSoupera + " poškození soupeři.");
