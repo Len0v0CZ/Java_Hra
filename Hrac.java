@@ -89,7 +89,7 @@ public class Hrac {
             }
 
             if (souperEfekt == DruhPredmetu.BOW) {
-                on += souper.hodKockou();
+                on += souper.hodKockou() - 1;
             }
 
             if (mujEfekt == DruhPredmetu.POTION) {
