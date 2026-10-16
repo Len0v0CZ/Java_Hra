@@ -10,8 +10,6 @@ public class Hrac {
         this.zlataky = 10;
         this.inventar = new Array<>(5);
     }
-
-    // Obchod: kazda vec stoji 3 goldy
     public boolean koupitPredmet(DruhPredmetu druh, String nazev) {
         if (this.zlataky < 3) {
             return false;
@@ -27,7 +25,6 @@ public class Hrac {
         return this.inventar;
     }
 
-    // indexPredmetu: index v inventari (napr. 0 až 4), nebo -1 pokud bojuje bez predmetu
     public void vyzvatNaSouboj(Hrac souper, int indexPredmetu) {
         Predmet zvolenyPredmet = this.inventar.vratPolozku(indexPredmetu);
         DruhPredmetu efekt = (zvolenyPredmet != null) ? zvolenyPredmet.getDruhPredmetu() : null;
@@ -35,12 +32,11 @@ public class Hrac {
         int ja = this.hodKockou();
         int on = souper.hodKockou();
 
-        // Luk dava druhy hod kostkou (pricte se k prvnimu, pripadne lze pouzit Math.max)
         if (efekt == DruhPredmetu.BOW) {
             ja += this.hodKockou();
         }
 
-        int zakladniDamage = 4; // Zakladni ztrata zivotu
+        int zakladniDamage = 4;
 
         if (ja > on) {
             int damage = (efekt == DruhPredmetu.MEC) ? zakladniDamage * 2 : zakladniDamage;
