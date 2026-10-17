@@ -122,16 +122,16 @@ public class Hrac {
 
             int damageNaSoupera = (mujEfekt == DruhPredmetu.MEC) ? ja * 2 - 1 : ja;
             if (souperEfekt == DruhPredmetu.ARMOR) {
-                damageNaSoupera /= 2 - 1;
+                damageNaSoupera = (damageNaSoupera / 2) - 1;
             }
 
             int damageNaMne = (souperEfekt == DruhPredmetu.MEC) ? on * 2 - 1 : on;
             if (mujEfekt == DruhPredmetu.ARMOR) {
-                damageNaMne /= 2 - 1;
+                damageNaMne = (damageNaMne / 2) - 1;
             }
 
             if (mujEfekt == DruhPredmetu.SHIELD) {
-                if (this.hodKockou() >= 3) {
+                if (this.hodKockou() > 3) {
                     damageNaMne = 0;
                     System.out.println(this.name + " použil štít a zablokoval útok!");
                 } 
@@ -141,7 +141,7 @@ public class Hrac {
             }
 
             if (souperEfekt == DruhPredmetu.SHIELD) {
-                if (souper.hodKockou() >= 3) {
+                if (souper.hodKockou() > 3) {
                     damageNaSoupera = 0;
                     System.out.println(souper.name + " použil štít a zablokoval útok!");
                 } 
