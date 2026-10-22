@@ -13,7 +13,7 @@ class Main {
             System.out.println("0: Vyzvat k souboji");
             System.out.println("1: obchod");
             System.out.println("2: inventář");
-            System.out.println("3: Přepnout na hráče 2");
+            System.out.println("3: Přepnout na druhého hráče");
             System.out.print("Vyber akci: ");
 
             if (!scanner.hasNext()) {
